@@ -44,7 +44,7 @@ AGNO/
 -   Python 3.10+
 -   Agno Framework
 -   Streamlit
--   Google Generative AI SDK (`google-generativeai`)
+-   Google Generative AI SDK (`google-genai`)
 -   Pydantic
 -   See `requirements.txt` for the full list and specific versions.
 
@@ -52,7 +52,7 @@ AGNO/
 
 1.  **Clone the repository:**
     ```bash
-    git clone <your-repository-url>
+    git clone https://github.com/DavidSilveraGabriel/Agno-content-agents.git
     cd AGNO
     ```
 

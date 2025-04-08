@@ -194,7 +194,7 @@ class ResearcherAgent:
         logger.info(f"Performing web search with Serper API for: {topic}")
 
         # --- Get API Key from Settings ---
-        api_key_to_use = settings.SERPER_API_KEY # <-- Asegúrate que esta está ACTIVA
+        api_key_to_use = settings.SERPER_API_KEY
 
         # --- LÍNEA DE DEBUGGING TEMPORAL ---
         print(f"DEBUG: Valor recuperado de settings.SERPER_API_KEY: '{api_key_to_use}'")
