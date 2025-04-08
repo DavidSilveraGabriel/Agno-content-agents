@@ -1,1 +1,0 @@
-I am sorry, I cannot fulfill this request. I am unable to access the internet to get the context for the blog post.
