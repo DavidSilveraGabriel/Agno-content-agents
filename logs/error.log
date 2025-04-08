@@ -81,3 +81,730 @@ Traceback (most recent call last):
     search_results_json = await self.search_tool.google_search(query=topic, max_results=5) # Search top 5
                           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 TypeError: object str can't be used in 'await' expression
+2025-04-08 11:08:14,876 - src.utils.logging_config - ERROR - Unexpected error during research method for topic 'What are MCPs (Model Context Protocols) and why you should use them?': 'Settings' object has no attribute 'SERPER_API_KEY'
+Traceback (most recent call last):
+  File "C:\Users\ingen\Desktop\AGENTES\AGNO\src\agents\researcher.py", line 104, in research
+    search_result = await self._search_and_analyze(topic)
+                    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\ingen\Desktop\AGENTES\AGNO\src\agents\researcher.py", line 163, in _search_and_analyze
+    'X-API-KEY': settings.SERPER_API_KEY, # Get key from settings
+                 ^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\ingen\Desktop\AGENTES\AGNO\venv\Lib\site-packages\pydantic\main.py", line 994, in __getattr__
+    raise AttributeError(f'{type(self).__name__!r} object has no attribute {item!r}')
+AttributeError: 'Settings' object has no attribute 'SERPER_API_KEY'
+2025-04-08 11:15:53,961 - src.utils.logging_config - ERROR - Error calling Serper API for 'What are MCPs (Model Context Protocols) and why you should use them?': 403 Client Error: Forbidden for url: https://google.serper.dev/search
+Traceback (most recent call last):
+  File "C:\Users\ingen\Desktop\AGENTES\AGNO\src\agents\researcher.py", line 169, in _search_and_analyze
+    response.raise_for_status() # Raise HTTPError for bad responses (4xx or 5xx)
+    ~~~~~~~~~~~~~~~~~~~~~~~~~^^
+  File "C:\Users\ingen\Desktop\AGENTES\AGNO\venv\Lib\site-packages\requests\models.py", line 1024, in raise_for_status
+    raise HTTPError(http_error_msg, response=self)
+requests.exceptions.HTTPError: 403 Client Error: Forbidden for url: https://google.serper.dev/search
+2025-04-08 11:30:40,044 - src.utils.logging_config - ERROR - Error calling Serper API for 'What are MCPs (Model Context Protocols) and why you should use them?': 403 Client Error: Forbidden for url: https://google.serper.dev/search
+Traceback (most recent call last):
+  File "C:\Users\ingen\Desktop\AGENTES\AGNO\src\agents\researcher.py", line 169, in _search_and_analyze
+    response.raise_for_status() # Raise HTTPError for bad responses (4xx or 5xx)
+    ~~~~~~~~~~~~~~~~~~~~~~~~~^^
+  File "C:\Users\ingen\Desktop\AGENTES\AGNO\venv\Lib\site-packages\requests\models.py", line 1024, in raise_for_status
+    raise HTTPError(http_error_msg, response=self)
+requests.exceptions.HTTPError: 403 Client Error: Forbidden for url: https://google.serper.dev/search
+2025-04-08 11:38:02,722 - src.utils.logging_config - ERROR - Error calling Serper API for 'What are MCPs (Model Context Protocols) and why you should use them?': 403 Client Error: Forbidden for url: https://google.serper.dev/search
+Traceback (most recent call last):
+  File "C:\Users\ingen\Desktop\AGENTES\AGNO\src\agents\researcher.py", line 175, in _search_and_analyze
+    response.raise_for_status() # Raise HTTPError for bad responses (4xx or 5xx)
+    ~~~~~~~~~~~~~~~~~~~~~~~~~^^
+  File "C:\Users\ingen\Desktop\AGENTES\AGNO\venv\Lib\site-packages\requests\models.py", line 1024, in raise_for_status
+    raise HTTPError(http_error_msg, response=self)
+requests.exceptions.HTTPError: 403 Client Error: Forbidden for url: https://google.serper.dev/search
+2025-04-08 11:41:10,761 - src.utils.logging_config - ERROR - Error calling Serper API for 'What are MCPs (Model Context Protocols) and why you should use them?': 403 Client Error: Forbidden for url: https://google.serper.dev/search
+Traceback (most recent call last):
+  File "C:\Users\ingen\Desktop\AGENTES\AGNO\src\agents\researcher.py", line 182, in _search_and_analyze
+    response.raise_for_status() # Raise HTTPError for bad responses (4xx or 5xx)
+    ~~~~~~~~~~~~~~~~~~~~~~~~~^^
+  File "C:\Users\ingen\Desktop\AGENTES\AGNO\venv\Lib\site-packages\requests\models.py", line 1024, in raise_for_status
+    raise HTTPError(http_error_msg, response=self)
+requests.exceptions.HTTPError: 403 Client Error: Forbidden for url: https://google.serper.dev/search
+2025-04-08 12:01:10,661 - src.utils.logging_config - ERROR - Error processing https://www.youtube.com/watch?v=7j_NE6Pjv-E with Crawl4AI: asyncio.run() cannot be called from a running event loop
+Traceback (most recent call last):
+  File "C:\Users\ingen\Desktop\AGENTES\AGNO\src\agents\researcher.py", line 143, in _process_urls
+    scraped_data = await self.scraper_tool.web_crawler(url=url) # Pass url as named argument
+                         ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^
+  File "C:\Users\ingen\Desktop\AGENTES\AGNO\venv\Lib\site-packages\agno\tools\crawl4ai.py", line 37, in web_crawler
+    return asyncio.run(self._async_web_crawler(url, max_length))
+           ~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\ingen\AppData\Local\Programs\Python\Python313\Lib\asyncio\runners.py", line 190, in run
+    raise RuntimeError(
+        "asyncio.run() cannot be called from a running event loop")
+RuntimeError: asyncio.run() cannot be called from a running event loop
+2025-04-08 12:01:10,683 - src.utils.logging_config - ERROR - Error processing https://www.anthropic.com/news/model-context-protocol with Crawl4AI: asyncio.run() cannot be called from a running event loop
+Traceback (most recent call last):
+  File "C:\Users\ingen\Desktop\AGENTES\AGNO\src\agents\researcher.py", line 143, in _process_urls
+    scraped_data = await self.scraper_tool.web_crawler(url=url) # Pass url as named argument
+                         ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^
+  File "C:\Users\ingen\Desktop\AGENTES\AGNO\venv\Lib\site-packages\agno\tools\crawl4ai.py", line 37, in web_crawler
+    return asyncio.run(self._async_web_crawler(url, max_length))
+           ~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\ingen\AppData\Local\Programs\Python\Python313\Lib\asyncio\runners.py", line 190, in run
+    raise RuntimeError(
+        "asyncio.run() cannot be called from a running event loop")
+RuntimeError: asyncio.run() cannot be called from a running event loop
+2025-04-08 12:01:10,685 - src.utils.logging_config - ERROR - Error processing https://www.descope.com/learn/post/mcp with Crawl4AI: asyncio.run() cannot be called from a running event loop
+Traceback (most recent call last):
+  File "C:\Users\ingen\Desktop\AGENTES\AGNO\src\agents\researcher.py", line 143, in _process_urls
+    scraped_data = await self.scraper_tool.web_crawler(url=url) # Pass url as named argument
+                         ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^
+  File "C:\Users\ingen\Desktop\AGENTES\AGNO\venv\Lib\site-packages\agno\tools\crawl4ai.py", line 37, in web_crawler
+    return asyncio.run(self._async_web_crawler(url, max_length))
+           ~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\ingen\AppData\Local\Programs\Python\Python313\Lib\asyncio\runners.py", line 190, in run
+    raise RuntimeError(
+        "asyncio.run() cannot be called from a running event loop")
+RuntimeError: asyncio.run() cannot be called from a running event loop
+2025-04-08 12:01:10,686 - src.utils.logging_config - ERROR - Error processing https://www.youtube.com/watch?v=5y9wl_r_tfE with Crawl4AI: asyncio.run() cannot be called from a running event loop
+Traceback (most recent call last):
+  File "C:\Users\ingen\Desktop\AGENTES\AGNO\src\agents\researcher.py", line 143, in _process_urls
+    scraped_data = await self.scraper_tool.web_crawler(url=url) # Pass url as named argument
+                         ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^
+  File "C:\Users\ingen\Desktop\AGENTES\AGNO\venv\Lib\site-packages\agno\tools\crawl4ai.py", line 37, in web_crawler
+    return asyncio.run(self._async_web_crawler(url, max_length))
+           ~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\ingen\AppData\Local\Programs\Python\Python313\Lib\asyncio\runners.py", line 190, in run
+    raise RuntimeError(
+        "asyncio.run() cannot be called from a running event loop")
+RuntimeError: asyncio.run() cannot be called from a running event loop
+2025-04-08 12:01:10,688 - src.utils.logging_config - ERROR - Error processing https://www.reddit.com/r/LLMDevs/comments/1jbqegg/model_context_protocol_mcp_clearly_explained/ with Crawl4AI: asyncio.run() cannot be called from a running event loop
+Traceback (most recent call last):
+  File "C:\Users\ingen\Desktop\AGENTES\AGNO\src\agents\researcher.py", line 143, in _process_urls
+    scraped_data = await self.scraper_tool.web_crawler(url=url) # Pass url as named argument
+                         ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^
+  File "C:\Users\ingen\Desktop\AGENTES\AGNO\venv\Lib\site-packages\agno\tools\crawl4ai.py", line 37, in web_crawler
+    return asyncio.run(self._async_web_crawler(url, max_length))
+           ~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\ingen\AppData\Local\Programs\Python\Python313\Lib\asyncio\runners.py", line 190, in run
+    raise RuntimeError(
+        "asyncio.run() cannot be called from a running event loop")
+RuntimeError: asyncio.run() cannot be called from a running event loop
+2025-04-08 12:01:10,690 - src.utils.logging_config - ERROR - Error processing https://www.datacamp.com/tutorial/mcp-model-context-protocol with Crawl4AI: asyncio.run() cannot be called from a running event loop
+Traceback (most recent call last):
+  File "C:\Users\ingen\Desktop\AGENTES\AGNO\src\agents\researcher.py", line 143, in _process_urls
+    scraped_data = await self.scraper_tool.web_crawler(url=url) # Pass url as named argument
+                         ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^
+  File "C:\Users\ingen\Desktop\AGENTES\AGNO\venv\Lib\site-packages\agno\tools\crawl4ai.py", line 37, in web_crawler
+    return asyncio.run(self._async_web_crawler(url, max_length))
+           ~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\ingen\AppData\Local\Programs\Python\Python313\Lib\asyncio\runners.py", line 190, in run
+    raise RuntimeError(
+        "asyncio.run() cannot be called from a running event loop")
+RuntimeError: asyncio.run() cannot be called from a running event loop
+2025-04-08 12:01:10,691 - src.utils.logging_config - ERROR - Error processing https://www.reddit.com/r/ClaudeAI/comments/1gzv8b9/anthropics_model_context_protocol_mcp_is_way/ with Crawl4AI: asyncio.run() cannot be called from a running event loop
+Traceback (most recent call last):
+  File "C:\Users\ingen\Desktop\AGENTES\AGNO\src\agents\researcher.py", line 143, in _process_urls
+    scraped_data = await self.scraper_tool.web_crawler(url=url) # Pass url as named argument
+                         ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^
+  File "C:\Users\ingen\Desktop\AGENTES\AGNO\venv\Lib\site-packages\agno\tools\crawl4ai.py", line 37, in web_crawler
+    return asyncio.run(self._async_web_crawler(url, max_length))
+           ~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\ingen\AppData\Local\Programs\Python\Python313\Lib\asyncio\runners.py", line 190, in run
+    raise RuntimeError(
+        "asyncio.run() cannot be called from a running event loop")
+RuntimeError: asyncio.run() cannot be called from a running event loop
+2025-04-08 12:01:10,693 - src.utils.logging_config - ERROR - Error processing https://unified.to/blog/when_to_use_and_not_use_model_context_protocol with Crawl4AI: asyncio.run() cannot be called from a running event loop
+Traceback (most recent call last):
+  File "C:\Users\ingen\Desktop\AGENTES\AGNO\src\agents\researcher.py", line 143, in _process_urls
+    scraped_data = await self.scraper_tool.web_crawler(url=url) # Pass url as named argument
+                         ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^
+  File "C:\Users\ingen\Desktop\AGENTES\AGNO\venv\Lib\site-packages\agno\tools\crawl4ai.py", line 37, in web_crawler
+    return asyncio.run(self._async_web_crawler(url, max_length))
+           ~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\ingen\AppData\Local\Programs\Python\Python313\Lib\asyncio\runners.py", line 190, in run
+    raise RuntimeError(
+        "asyncio.run() cannot be called from a running event loop")
+RuntimeError: asyncio.run() cannot be called from a running event loop
+2025-04-08 12:01:10,694 - src.utils.logging_config - ERROR - Error processing https://modelcontextprotocol.io/introduction with Crawl4AI: asyncio.run() cannot be called from a running event loop
+Traceback (most recent call last):
+  File "C:\Users\ingen\Desktop\AGENTES\AGNO\src\agents\researcher.py", line 143, in _process_urls
+    scraped_data = await self.scraper_tool.web_crawler(url=url) # Pass url as named argument
+                         ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^
+  File "C:\Users\ingen\Desktop\AGENTES\AGNO\venv\Lib\site-packages\agno\tools\crawl4ai.py", line 37, in web_crawler
+    return asyncio.run(self._async_web_crawler(url, max_length))
+           ~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\ingen\AppData\Local\Programs\Python\Python313\Lib\asyncio\runners.py", line 190, in run
+    raise RuntimeError(
+        "asyncio.run() cannot be called from a running event loop")
+RuntimeError: asyncio.run() cannot be called from a running event loop
+2025-04-08 12:05:50,485 - src.utils.logging_config - ERROR - Error calling Serper API for 'What are MCPs (Model Context Protocols) and why you should use them?': 403 Client Error: Forbidden for url: https://google.serper.dev/search
+Traceback (most recent call last):
+  File "C:\Users\ingen\Desktop\AGENTES\AGNO\src\agents\researcher.py", line 163, in _search_and_analyze
+    response.raise_for_status()  # Raise HTTPError for bad responses (4xx or 5xx)
+    ~~~~~~~~~~~~~~~~~~~~~~~~~^^
+  File "C:\Users\ingen\Desktop\AGENTES\AGNO\venv\Lib\site-packages\requests\models.py", line 1024, in raise_for_status
+    raise HTTPError(http_error_msg, response=self)
+requests.exceptions.HTTPError: 403 Client Error: Forbidden for url: https://google.serper.dev/search
+2025-04-08 12:09:05,639 - src.utils.logging_config - ERROR - Error processing https://www.youtube.com/watch?v=7j_NE6Pjv-E with Crawl4AI: asyncio.run() cannot be called from a running event loop
+Traceback (most recent call last):
+  File "C:\Users\ingen\Desktop\AGENTES\AGNO\src\agents\researcher.py", line 123, in _process_urls
+    scraped_data = await self.scraper_tool.web_crawler(
+                         ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^
+        url=url
+        ^^^^^^^
+    )  # Pass url as named argument
+    ^
+  File "C:\Users\ingen\Desktop\AGENTES\AGNO\venv\Lib\site-packages\agno\tools\crawl4ai.py", line 37, in web_crawler
+    return asyncio.run(self._async_web_crawler(url, max_length))
+           ~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\ingen\AppData\Local\Programs\Python\Python313\Lib\asyncio\runners.py", line 190, in run
+    raise RuntimeError(
+        "asyncio.run() cannot be called from a running event loop")
+RuntimeError: asyncio.run() cannot be called from a running event loop
+2025-04-08 12:09:05,643 - src.utils.logging_config - ERROR - Error processing https://www.anthropic.com/news/model-context-protocol with Crawl4AI: asyncio.run() cannot be called from a running event loop
+Traceback (most recent call last):
+  File "C:\Users\ingen\Desktop\AGENTES\AGNO\src\agents\researcher.py", line 123, in _process_urls
+    scraped_data = await self.scraper_tool.web_crawler(
+                         ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^
+        url=url
+        ^^^^^^^
+    )  # Pass url as named argument
+    ^
+  File "C:\Users\ingen\Desktop\AGENTES\AGNO\venv\Lib\site-packages\agno\tools\crawl4ai.py", line 37, in web_crawler
+    return asyncio.run(self._async_web_crawler(url, max_length))
+           ~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\ingen\AppData\Local\Programs\Python\Python313\Lib\asyncio\runners.py", line 190, in run
+    raise RuntimeError(
+        "asyncio.run() cannot be called from a running event loop")
+RuntimeError: asyncio.run() cannot be called from a running event loop
+2025-04-08 12:09:05,645 - src.utils.logging_config - ERROR - Error processing https://www.descope.com/learn/post/mcp with Crawl4AI: asyncio.run() cannot be called from a running event loop
+Traceback (most recent call last):
+  File "C:\Users\ingen\Desktop\AGENTES\AGNO\src\agents\researcher.py", line 123, in _process_urls
+    scraped_data = await self.scraper_tool.web_crawler(
+                         ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^
+        url=url
+        ^^^^^^^
+    )  # Pass url as named argument
+    ^
+  File "C:\Users\ingen\Desktop\AGENTES\AGNO\venv\Lib\site-packages\agno\tools\crawl4ai.py", line 37, in web_crawler
+    return asyncio.run(self._async_web_crawler(url, max_length))
+           ~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\ingen\AppData\Local\Programs\Python\Python313\Lib\asyncio\runners.py", line 190, in run
+    raise RuntimeError(
+        "asyncio.run() cannot be called from a running event loop")
+RuntimeError: asyncio.run() cannot be called from a running event loop
+2025-04-08 12:09:05,647 - src.utils.logging_config - ERROR - Error processing https://www.youtube.com/watch?v=5y9wl_r_tfE with Crawl4AI: asyncio.run() cannot be called from a running event loop
+Traceback (most recent call last):
+  File "C:\Users\ingen\Desktop\AGENTES\AGNO\src\agents\researcher.py", line 123, in _process_urls
+    scraped_data = await self.scraper_tool.web_crawler(
+                         ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^
+        url=url
+        ^^^^^^^
+    )  # Pass url as named argument
+    ^
+  File "C:\Users\ingen\Desktop\AGENTES\AGNO\venv\Lib\site-packages\agno\tools\crawl4ai.py", line 37, in web_crawler
+    return asyncio.run(self._async_web_crawler(url, max_length))
+           ~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\ingen\AppData\Local\Programs\Python\Python313\Lib\asyncio\runners.py", line 190, in run
+    raise RuntimeError(
+        "asyncio.run() cannot be called from a running event loop")
+RuntimeError: asyncio.run() cannot be called from a running event loop
+2025-04-08 12:09:05,648 - src.utils.logging_config - ERROR - Error processing https://www.reddit.com/r/LLMDevs/comments/1jbqegg/model_context_protocol_mcp_clearly_explained/ with Crawl4AI: asyncio.run() cannot be called from a running event loop
+Traceback (most recent call last):
+  File "C:\Users\ingen\Desktop\AGENTES\AGNO\src\agents\researcher.py", line 123, in _process_urls
+    scraped_data = await self.scraper_tool.web_crawler(
+                         ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^
+        url=url
+        ^^^^^^^
+    )  # Pass url as named argument
+    ^
+  File "C:\Users\ingen\Desktop\AGENTES\AGNO\venv\Lib\site-packages\agno\tools\crawl4ai.py", line 37, in web_crawler
+    return asyncio.run(self._async_web_crawler(url, max_length))
+           ~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\ingen\AppData\Local\Programs\Python\Python313\Lib\asyncio\runners.py", line 190, in run
+    raise RuntimeError(
+        "asyncio.run() cannot be called from a running event loop")
+RuntimeError: asyncio.run() cannot be called from a running event loop
+2025-04-08 12:09:05,649 - src.utils.logging_config - ERROR - Error processing https://www.datacamp.com/tutorial/mcp-model-context-protocol with Crawl4AI: asyncio.run() cannot be called from a running event loop
+Traceback (most recent call last):
+  File "C:\Users\ingen\Desktop\AGENTES\AGNO\src\agents\researcher.py", line 123, in _process_urls
+    scraped_data = await self.scraper_tool.web_crawler(
+                         ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^
+        url=url
+        ^^^^^^^
+    )  # Pass url as named argument
+    ^
+  File "C:\Users\ingen\Desktop\AGENTES\AGNO\venv\Lib\site-packages\agno\tools\crawl4ai.py", line 37, in web_crawler
+    return asyncio.run(self._async_web_crawler(url, max_length))
+           ~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\ingen\AppData\Local\Programs\Python\Python313\Lib\asyncio\runners.py", line 190, in run
+    raise RuntimeError(
+        "asyncio.run() cannot be called from a running event loop")
+RuntimeError: asyncio.run() cannot be called from a running event loop
+2025-04-08 12:09:05,651 - src.utils.logging_config - ERROR - Error processing https://www.reddit.com/r/ClaudeAI/comments/1gzv8b9/anthropics_model_context_protocol_mcp_is_way/ with Crawl4AI: asyncio.run() cannot be called from a running event loop
+Traceback (most recent call last):
+  File "C:\Users\ingen\Desktop\AGENTES\AGNO\src\agents\researcher.py", line 123, in _process_urls
+    scraped_data = await self.scraper_tool.web_crawler(
+                         ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^
+        url=url
+        ^^^^^^^
+    )  # Pass url as named argument
+    ^
+  File "C:\Users\ingen\Desktop\AGENTES\AGNO\venv\Lib\site-packages\agno\tools\crawl4ai.py", line 37, in web_crawler
+    return asyncio.run(self._async_web_crawler(url, max_length))
+           ~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\ingen\AppData\Local\Programs\Python\Python313\Lib\asyncio\runners.py", line 190, in run
+    raise RuntimeError(
+        "asyncio.run() cannot be called from a running event loop")
+RuntimeError: asyncio.run() cannot be called from a running event loop
+2025-04-08 12:09:05,652 - src.utils.logging_config - ERROR - Error processing https://unified.to/blog/when_to_use_and_not_use_model_context_protocol with Crawl4AI: asyncio.run() cannot be called from a running event loop
+Traceback (most recent call last):
+  File "C:\Users\ingen\Desktop\AGENTES\AGNO\src\agents\researcher.py", line 123, in _process_urls
+    scraped_data = await self.scraper_tool.web_crawler(
+                         ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^
+        url=url
+        ^^^^^^^
+    )  # Pass url as named argument
+    ^
+  File "C:\Users\ingen\Desktop\AGENTES\AGNO\venv\Lib\site-packages\agno\tools\crawl4ai.py", line 37, in web_crawler
+    return asyncio.run(self._async_web_crawler(url, max_length))
+           ~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\ingen\AppData\Local\Programs\Python\Python313\Lib\asyncio\runners.py", line 190, in run
+    raise RuntimeError(
+        "asyncio.run() cannot be called from a running event loop")
+RuntimeError: asyncio.run() cannot be called from a running event loop
+2025-04-08 12:09:05,654 - src.utils.logging_config - ERROR - Error processing https://modelcontextprotocol.io/introduction with Crawl4AI: asyncio.run() cannot be called from a running event loop
+Traceback (most recent call last):
+  File "C:\Users\ingen\Desktop\AGENTES\AGNO\src\agents\researcher.py", line 123, in _process_urls
+    scraped_data = await self.scraper_tool.web_crawler(
+                         ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^
+        url=url
+        ^^^^^^^
+    )  # Pass url as named argument
+    ^
+  File "C:\Users\ingen\Desktop\AGENTES\AGNO\venv\Lib\site-packages\agno\tools\crawl4ai.py", line 37, in web_crawler
+    return asyncio.run(self._async_web_crawler(url, max_length))
+           ~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\ingen\AppData\Local\Programs\Python\Python313\Lib\asyncio\runners.py", line 190, in run
+    raise RuntimeError(
+        "asyncio.run() cannot be called from a running event loop")
+RuntimeError: asyncio.run() cannot be called from a running event loop
+2025-04-08 12:09:14,537 - src.utils.logging_config - ERROR - Error generating content for Linkedin after 1 attempts: cannot schedule new futures after shutdown
+Traceback (most recent call last):
+  File "C:\Users\ingen\Desktop\AGENTES\AGNO\venv\Lib\site-packages\agno\models\google\gemini.py", line 402, in ainvoke
+    return await self.get_client().aio.models.generate_content(
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    ...<3 lines>...
+    )
+    ^
+  File "C:\Users\ingen\Desktop\AGENTES\AGNO\venv\Lib\site-packages\google\genai\models.py", line 6415, in generate_content
+    response = await self._generate_content(
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+        model=model, contents=contents, config=config
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "C:\Users\ingen\Desktop\AGENTES\AGNO\venv\Lib\site-packages\google\genai\models.py", line 5414, in _generate_content
+    response_dict = await self._api_client.async_request(
+                    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+        'post', path, request_dict, http_options
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "C:\Users\ingen\Desktop\AGENTES\AGNO\venv\Lib\site-packages\google\genai\_api_client.py", line 689, in async_request
+    result = await self._async_request(http_request=http_request, stream=False)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\ingen\Desktop\AGENTES\AGNO\venv\Lib\site-packages\google\genai\_api_client.py", line 626, in _async_request
+    response = await self._async_httpx_client.request(
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    ...<5 lines>...
+    )
+    ^
+  File "C:\Users\ingen\Desktop\AGENTES\AGNO\venv\Lib\site-packages\httpx\_client.py", line 1540, in request
+    return await self.send(request, auth=auth, follow_redirects=follow_redirects)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\ingen\Desktop\AGENTES\AGNO\venv\Lib\site-packages\httpx\_client.py", line 1629, in send
+    response = await self._send_handling_auth(
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    ...<4 lines>...
+    )
+    ^
+  File "C:\Users\ingen\Desktop\AGENTES\AGNO\venv\Lib\site-packages\httpx\_client.py", line 1657, in _send_handling_auth
+    response = await self._send_handling_redirects(
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    ...<3 lines>...
+    )
+    ^
+  File "C:\Users\ingen\Desktop\AGENTES\AGNO\venv\Lib\site-packages\httpx\_client.py", line 1694, in _send_handling_redirects
+    response = await self._send_single_request(request)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\ingen\Desktop\AGENTES\AGNO\venv\Lib\site-packages\httpx\_client.py", line 1730, in _send_single_request
+    response = await transport.handle_async_request(request)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\ingen\Desktop\AGENTES\AGNO\venv\Lib\site-packages\httpx\_transports\default.py", line 394, in handle_async_request
+    resp = await self._pool.handle_async_request(req)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\ingen\Desktop\AGENTES\AGNO\venv\Lib\site-packages\httpcore\_async\connection_pool.py", line 256, in handle_async_request
+    raise exc from None
+  File "C:\Users\ingen\Desktop\AGENTES\AGNO\venv\Lib\site-packages\httpcore\_async\connection_pool.py", line 236, in handle_async_request
+    response = await connection.handle_async_request(
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+        pool_request.request
+        ^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "C:\Users\ingen\Desktop\AGENTES\AGNO\venv\Lib\site-packages\httpcore\_async\connection.py", line 101, in handle_async_request
+    raise exc
+  File "C:\Users\ingen\Desktop\AGENTES\AGNO\venv\Lib\site-packages\httpcore\_async\connection.py", line 78, in handle_async_request
+    stream = await self._connect(request)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\ingen\Desktop\AGENTES\AGNO\venv\Lib\site-packages\httpcore\_async\connection.py", line 124, in _connect
+    stream = await self._network_backend.connect_tcp(**kwargs)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\ingen\Desktop\AGENTES\AGNO\venv\Lib\site-packages\httpcore\_backends\auto.py", line 31, in connect_tcp
+    return await self._backend.connect_tcp(
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    ...<5 lines>...
+    )
+    ^
+  File "C:\Users\ingen\Desktop\AGENTES\AGNO\venv\Lib\site-packages\httpcore\_backends\anyio.py", line 115, in connect_tcp
+    stream: anyio.abc.ByteStream = await anyio.connect_tcp(
+                                   ^^^^^^^^^^^^^^^^^^^^^^^^
+    ...<3 lines>...
+    )
+    ^
+  File "C:\Users\ingen\Desktop\AGENTES\AGNO\venv\Lib\site-packages\anyio\_core\_sockets.py", line 208, in connect_tcp
+    gai_res = await getaddrinfo(
+              ^^^^^^^^^^^^^^^^^^
+        target_host, remote_port, family=family, type=socket.SOCK_STREAM
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "C:\Users\ingen\Desktop\AGENTES\AGNO\venv\Lib\site-packages\anyio\_core\_sockets.py", line 584, in getaddrinfo
+    gai_res = await get_async_backend().getaddrinfo(
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+        encoded_host, port, family=family, type=type, proto=proto, flags=flags
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "C:\Users\ingen\Desktop\AGENTES\AGNO\venv\Lib\site-packages\anyio\_backends\_asyncio.py", line 2692, in getaddrinfo
+    return await get_running_loop().getaddrinfo(
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+        host, port, family=family, type=type, proto=proto, flags=flags
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "C:\Users\ingen\AppData\Local\Programs\Python\Python313\Lib\asyncio\base_events.py", line 934, in getaddrinfo
+    return await self.run_in_executor(
+                 ~~~~~~~~~~~~~~~~~~~~^
+        None, getaddr_func, host, port, family, type, proto, flags)
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\ingen\AppData\Local\Programs\Python\Python313\Lib\asyncio\base_events.py", line 896, in run_in_executor
+    executor.submit(func, *args), loop=self)
+    ~~~~~~~~~~~~~~~^^^^^^^^^^^^^
+  File "C:\Users\ingen\AppData\Local\Programs\Python\Python313\Lib\concurrent\futures\thread.py", line 171, in submit
+    raise RuntimeError('cannot schedule new futures after shutdown')
+RuntimeError: cannot schedule new futures after shutdown
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "C:\Users\ingen\Desktop\AGENTES\AGNO\src\workflows\social_content_workflow.py", line 141, in arun
+    response = await agent.arun(final_output.research_context)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\ingen\Desktop\AGENTES\AGNO\venv\Lib\site-packages\agno\agent\agent.py", line 1511, in arun
+    raise last_exception
+  File "C:\Users\ingen\Desktop\AGENTES\AGNO\venv\Lib\site-packages\agno\agent\agent.py", line 1482, in arun
+    return await resp.__anext__()
+           ^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\ingen\Desktop\AGENTES\AGNO\venv\Lib\site-packages\agno\agent\agent.py", line 1231, in _arun
+    model_response = await self.model.aresponse(messages=run_messages.messages)
+                     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\ingen\Desktop\AGENTES\AGNO\venv\Lib\site-packages\agno\models\base.py", line 246, in aresponse
+    assistant_message, has_tool_calls = await self._aprocess_model_response(
+                                        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    ...<2 lines>...
+    )
+    ^
+  File "C:\Users\ingen\Desktop\AGENTES\AGNO\venv\Lib\site-packages\agno\models\base.py", line 371, in _aprocess_model_response
+    response = await self.ainvoke(messages=messages)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\ingen\Desktop\AGENTES\AGNO\venv\Lib\site-packages\agno\models\google\gemini.py", line 414, in ainvoke
+    raise ModelProviderError(message=str(e), model_name=self.name, model_id=self.id) from e
+agno.exceptions.ModelProviderError: cannot schedule new futures after shutdown
+2025-04-08 12:14:21,136 - asyncio - ERROR - Task exception was never retrieved
+future: <Task finished name='Task-63' coro=<Connection.run() done, defined at C:\Users\ingen\Desktop\AGENTES\AGNO\venv\Lib\site-packages\playwright\_impl\_connection.py:272> exception=NotImplementedError()>
+Traceback (most recent call last):
+  File "C:\Users\ingen\Desktop\AGENTES\AGNO\venv\Lib\site-packages\playwright\_impl\_connection.py", line 279, in run
+    await self._transport.connect()
+  File "C:\Users\ingen\Desktop\AGENTES\AGNO\venv\Lib\site-packages\playwright\_impl\_transport.py", line 133, in connect
+    raise exc
+  File "C:\Users\ingen\Desktop\AGENTES\AGNO\venv\Lib\site-packages\playwright\_impl\_transport.py", line 120, in connect
+    self._proc = await asyncio.create_subprocess_exec(
+                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    ...<9 lines>...
+    )
+    ^
+  File "C:\Users\ingen\AppData\Local\Programs\Python\Python313\Lib\asyncio\subprocess.py", line 224, in create_subprocess_exec
+    transport, protocol = await loop.subprocess_exec(
+                          ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    ...<3 lines>...
+        stderr=stderr, **kwds)
+        ^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\ingen\AppData\Local\Programs\Python\Python313\Lib\asyncio\base_events.py", line 1787, in subprocess_exec
+    transport = await self._make_subprocess_transport(
+                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+        protocol, popen_args, False, stdin, stdout, stderr,
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+        bufsize, **kwargs)
+        ^^^^^^^^^^^^^^^^^^
+  File "C:\Users\ingen\AppData\Local\Programs\Python\Python313\Lib\asyncio\base_events.py", line 534, in _make_subprocess_transport
+    raise NotImplementedError
+NotImplementedError
+2025-04-08 12:14:21,205 - asyncio - ERROR - Task exception was never retrieved
+future: <Task finished name='Task-64' coro=<Connection.run() done, defined at C:\Users\ingen\Desktop\AGENTES\AGNO\venv\Lib\site-packages\playwright\_impl\_connection.py:272> exception=NotImplementedError()>
+Traceback (most recent call last):
+  File "C:\Users\ingen\Desktop\AGENTES\AGNO\venv\Lib\site-packages\playwright\_impl\_connection.py", line 279, in run
+    await self._transport.connect()
+  File "C:\Users\ingen\Desktop\AGENTES\AGNO\venv\Lib\site-packages\playwright\_impl\_transport.py", line 133, in connect
+    raise exc
+  File "C:\Users\ingen\Desktop\AGENTES\AGNO\venv\Lib\site-packages\playwright\_impl\_transport.py", line 120, in connect
+    self._proc = await asyncio.create_subprocess_exec(
+                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    ...<9 lines>...
+    )
+    ^
+  File "C:\Users\ingen\AppData\Local\Programs\Python\Python313\Lib\asyncio\subprocess.py", line 224, in create_subprocess_exec
+    transport, protocol = await loop.subprocess_exec(
+                          ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    ...<3 lines>...
+        stderr=stderr, **kwds)
+        ^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\ingen\AppData\Local\Programs\Python\Python313\Lib\asyncio\base_events.py", line 1787, in subprocess_exec
+    transport = await self._make_subprocess_transport(
+                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+        protocol, popen_args, False, stdin, stdout, stderr,
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+        bufsize, **kwargs)
+        ^^^^^^^^^^^^^^^^^^
+  File "C:\Users\ingen\AppData\Local\Programs\Python\Python313\Lib\asyncio\base_events.py", line 534, in _make_subprocess_transport
+    raise NotImplementedError
+NotImplementedError
+2025-04-08 12:14:21,238 - asyncio - ERROR - Task exception was never retrieved
+future: <Task finished name='Task-66' coro=<Connection.run() done, defined at C:\Users\ingen\Desktop\AGENTES\AGNO\venv\Lib\site-packages\playwright\_impl\_connection.py:272> exception=NotImplementedError()>
+Traceback (most recent call last):
+  File "C:\Users\ingen\Desktop\AGENTES\AGNO\venv\Lib\site-packages\playwright\_impl\_connection.py", line 279, in run
+    await self._transport.connect()
+  File "C:\Users\ingen\Desktop\AGENTES\AGNO\venv\Lib\site-packages\playwright\_impl\_transport.py", line 133, in connect
+    raise exc
+  File "C:\Users\ingen\Desktop\AGENTES\AGNO\venv\Lib\site-packages\playwright\_impl\_transport.py", line 120, in connect
+    self._proc = await asyncio.create_subprocess_exec(
+                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    ...<9 lines>...
+    )
+    ^
+  File "C:\Users\ingen\AppData\Local\Programs\Python\Python313\Lib\asyncio\subprocess.py", line 224, in create_subprocess_exec
+    transport, protocol = await loop.subprocess_exec(
+                          ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    ...<3 lines>...
+        stderr=stderr, **kwds)
+        ^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\ingen\AppData\Local\Programs\Python\Python313\Lib\asyncio\base_events.py", line 1787, in subprocess_exec
+    transport = await self._make_subprocess_transport(
+                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+        protocol, popen_args, False, stdin, stdout, stderr,
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+        bufsize, **kwargs)
+        ^^^^^^^^^^^^^^^^^^
+  File "C:\Users\ingen\AppData\Local\Programs\Python\Python313\Lib\asyncio\base_events.py", line 534, in _make_subprocess_transport
+    raise NotImplementedError
+NotImplementedError
+2025-04-08 12:14:21,270 - asyncio - ERROR - Task exception was never retrieved
+future: <Task finished name='Task-67' coro=<Connection.run() done, defined at C:\Users\ingen\Desktop\AGENTES\AGNO\venv\Lib\site-packages\playwright\_impl\_connection.py:272> exception=NotImplementedError()>
+Traceback (most recent call last):
+  File "C:\Users\ingen\Desktop\AGENTES\AGNO\venv\Lib\site-packages\playwright\_impl\_connection.py", line 279, in run
+    await self._transport.connect()
+  File "C:\Users\ingen\Desktop\AGENTES\AGNO\venv\Lib\site-packages\playwright\_impl\_transport.py", line 133, in connect
+    raise exc
+  File "C:\Users\ingen\Desktop\AGENTES\AGNO\venv\Lib\site-packages\playwright\_impl\_transport.py", line 120, in connect
+    self._proc = await asyncio.create_subprocess_exec(
+                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    ...<9 lines>...
+    )
+    ^
+  File "C:\Users\ingen\AppData\Local\Programs\Python\Python313\Lib\asyncio\subprocess.py", line 224, in create_subprocess_exec
+    transport, protocol = await loop.subprocess_exec(
+                          ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    ...<3 lines>...
+        stderr=stderr, **kwds)
+        ^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\ingen\AppData\Local\Programs\Python\Python313\Lib\asyncio\base_events.py", line 1787, in subprocess_exec
+    transport = await self._make_subprocess_transport(
+                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+        protocol, popen_args, False, stdin, stdout, stderr,
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+        bufsize, **kwargs)
+        ^^^^^^^^^^^^^^^^^^
+  File "C:\Users\ingen\AppData\Local\Programs\Python\Python313\Lib\asyncio\base_events.py", line 534, in _make_subprocess_transport
+    raise NotImplementedError
+NotImplementedError
+2025-04-08 12:14:21,302 - asyncio - ERROR - Task exception was never retrieved
+future: <Task finished name='Task-68' coro=<Connection.run() done, defined at C:\Users\ingen\Desktop\AGENTES\AGNO\venv\Lib\site-packages\playwright\_impl\_connection.py:272> exception=NotImplementedError()>
+Traceback (most recent call last):
+  File "C:\Users\ingen\Desktop\AGENTES\AGNO\venv\Lib\site-packages\playwright\_impl\_connection.py", line 279, in run
+    await self._transport.connect()
+  File "C:\Users\ingen\Desktop\AGENTES\AGNO\venv\Lib\site-packages\playwright\_impl\_transport.py", line 133, in connect
+    raise exc
+  File "C:\Users\ingen\Desktop\AGENTES\AGNO\venv\Lib\site-packages\playwright\_impl\_transport.py", line 120, in connect
+    self._proc = await asyncio.create_subprocess_exec(
+                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    ...<9 lines>...
+    )
+    ^
+  File "C:\Users\ingen\AppData\Local\Programs\Python\Python313\Lib\asyncio\subprocess.py", line 224, in create_subprocess_exec
+    transport, protocol = await loop.subprocess_exec(
+                          ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    ...<3 lines>...
+        stderr=stderr, **kwds)
+        ^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\ingen\AppData\Local\Programs\Python\Python313\Lib\asyncio\base_events.py", line 1787, in subprocess_exec
+    transport = await self._make_subprocess_transport(
+                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+        protocol, popen_args, False, stdin, stdout, stderr,
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+        bufsize, **kwargs)
+        ^^^^^^^^^^^^^^^^^^
+  File "C:\Users\ingen\AppData\Local\Programs\Python\Python313\Lib\asyncio\base_events.py", line 534, in _make_subprocess_transport
+    raise NotImplementedError
+NotImplementedError
+2025-04-08 12:14:21,334 - asyncio - ERROR - Task exception was never retrieved
+future: <Task finished name='Task-69' coro=<Connection.run() done, defined at C:\Users\ingen\Desktop\AGENTES\AGNO\venv\Lib\site-packages\playwright\_impl\_connection.py:272> exception=NotImplementedError()>
+Traceback (most recent call last):
+  File "C:\Users\ingen\Desktop\AGENTES\AGNO\venv\Lib\site-packages\playwright\_impl\_connection.py", line 279, in run
+    await self._transport.connect()
+  File "C:\Users\ingen\Desktop\AGENTES\AGNO\venv\Lib\site-packages\playwright\_impl\_transport.py", line 133, in connect
+    raise exc
+  File "C:\Users\ingen\Desktop\AGENTES\AGNO\venv\Lib\site-packages\playwright\_impl\_transport.py", line 120, in connect
+    self._proc = await asyncio.create_subprocess_exec(
+                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    ...<9 lines>...
+    )
+    ^
+  File "C:\Users\ingen\AppData\Local\Programs\Python\Python313\Lib\asyncio\subprocess.py", line 224, in create_subprocess_exec
+    transport, protocol = await loop.subprocess_exec(
+                          ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    ...<3 lines>...
+        stderr=stderr, **kwds)
+        ^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\ingen\AppData\Local\Programs\Python\Python313\Lib\asyncio\base_events.py", line 1787, in subprocess_exec
+    transport = await self._make_subprocess_transport(
+                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+        protocol, popen_args, False, stdin, stdout, stderr,
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+        bufsize, **kwargs)
+        ^^^^^^^^^^^^^^^^^^
+  File "C:\Users\ingen\AppData\Local\Programs\Python\Python313\Lib\asyncio\base_events.py", line 534, in _make_subprocess_transport
+    raise NotImplementedError
+NotImplementedError
+2025-04-08 12:14:21,369 - asyncio - ERROR - Task exception was never retrieved
+future: <Task finished name='Task-70' coro=<Connection.run() done, defined at C:\Users\ingen\Desktop\AGENTES\AGNO\venv\Lib\site-packages\playwright\_impl\_connection.py:272> exception=NotImplementedError()>
+Traceback (most recent call last):
+  File "C:\Users\ingen\Desktop\AGENTES\AGNO\venv\Lib\site-packages\playwright\_impl\_connection.py", line 279, in run
+    await self._transport.connect()
+  File "C:\Users\ingen\Desktop\AGENTES\AGNO\venv\Lib\site-packages\playwright\_impl\_transport.py", line 133, in connect
+    raise exc
+  File "C:\Users\ingen\Desktop\AGENTES\AGNO\venv\Lib\site-packages\playwright\_impl\_transport.py", line 120, in connect
+    self._proc = await asyncio.create_subprocess_exec(
+                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    ...<9 lines>...
+    )
+    ^
+  File "C:\Users\ingen\AppData\Local\Programs\Python\Python313\Lib\asyncio\subprocess.py", line 224, in create_subprocess_exec
+    transport, protocol = await loop.subprocess_exec(
+                          ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    ...<3 lines>...
+        stderr=stderr, **kwds)
+        ^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\ingen\AppData\Local\Programs\Python\Python313\Lib\asyncio\base_events.py", line 1787, in subprocess_exec
+    transport = await self._make_subprocess_transport(
+                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+        protocol, popen_args, False, stdin, stdout, stderr,
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+        bufsize, **kwargs)
+        ^^^^^^^^^^^^^^^^^^
+  File "C:\Users\ingen\AppData\Local\Programs\Python\Python313\Lib\asyncio\base_events.py", line 534, in _make_subprocess_transport
+    raise NotImplementedError
+NotImplementedError
+2025-04-08 12:14:21,401 - asyncio - ERROR - Task exception was never retrieved
+future: <Task finished name='Task-71' coro=<Connection.run() done, defined at C:\Users\ingen\Desktop\AGENTES\AGNO\venv\Lib\site-packages\playwright\_impl\_connection.py:272> exception=NotImplementedError()>
+Traceback (most recent call last):
+  File "C:\Users\ingen\Desktop\AGENTES\AGNO\venv\Lib\site-packages\playwright\_impl\_connection.py", line 279, in run
+    await self._transport.connect()
+  File "C:\Users\ingen\Desktop\AGENTES\AGNO\venv\Lib\site-packages\playwright\_impl\_transport.py", line 133, in connect
+    raise exc
+  File "C:\Users\ingen\Desktop\AGENTES\AGNO\venv\Lib\site-packages\playwright\_impl\_transport.py", line 120, in connect
+    self._proc = await asyncio.create_subprocess_exec(
+                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    ...<9 lines>...
+    )
+    ^
+  File "C:\Users\ingen\AppData\Local\Programs\Python\Python313\Lib\asyncio\subprocess.py", line 224, in create_subprocess_exec
+    transport, protocol = await loop.subprocess_exec(
+                          ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    ...<3 lines>...
+        stderr=stderr, **kwds)
+        ^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\ingen\AppData\Local\Programs\Python\Python313\Lib\asyncio\base_events.py", line 1787, in subprocess_exec
+    transport = await self._make_subprocess_transport(
+                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+        protocol, popen_args, False, stdin, stdout, stderr,
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+        bufsize, **kwargs)
+        ^^^^^^^^^^^^^^^^^^
+  File "C:\Users\ingen\AppData\Local\Programs\Python\Python313\Lib\asyncio\base_events.py", line 534, in _make_subprocess_transport
+    raise NotImplementedError
+NotImplementedError
+2025-04-08 12:14:21,436 - asyncio - ERROR - Task exception was never retrieved
+future: <Task finished name='Task-72' coro=<Connection.run() done, defined at C:\Users\ingen\Desktop\AGENTES\AGNO\venv\Lib\site-packages\playwright\_impl\_connection.py:272> exception=NotImplementedError()>
+Traceback (most recent call last):
+  File "C:\Users\ingen\Desktop\AGENTES\AGNO\venv\Lib\site-packages\playwright\_impl\_connection.py", line 279, in run
+    await self._transport.connect()
+  File "C:\Users\ingen\Desktop\AGENTES\AGNO\venv\Lib\site-packages\playwright\_impl\_transport.py", line 133, in connect
+    raise exc
+  File "C:\Users\ingen\Desktop\AGENTES\AGNO\venv\Lib\site-packages\playwright\_impl\_transport.py", line 120, in connect
+    self._proc = await asyncio.create_subprocess_exec(
+                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    ...<9 lines>...
+    )
+    ^
+  File "C:\Users\ingen\AppData\Local\Programs\Python\Python313\Lib\asyncio\subprocess.py", line 224, in create_subprocess_exec
+    transport, protocol = await loop.subprocess_exec(
+                          ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    ...<3 lines>...
+        stderr=stderr, **kwds)
+        ^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\ingen\AppData\Local\Programs\Python\Python313\Lib\asyncio\base_events.py", line 1787, in subprocess_exec
+    transport = await self._make_subprocess_transport(
+                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+        protocol, popen_args, False, stdin, stdout, stderr,
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+        bufsize, **kwargs)
+        ^^^^^^^^^^^^^^^^^^
+  File "C:\Users\ingen\AppData\Local\Programs\Python\Python313\Lib\asyncio\base_events.py", line 534, in _make_subprocess_transport
+    raise NotImplementedError
+NotImplementedError
+2025-04-08 12:18:33,723 - src.utils.logging_config - ERROR - Error starting Agno workflow: no running event loop
+Traceback (most recent call last):
+  File "C:\Users\ingen\Desktop\AGENTES\AGNO\app\app.py", line 130, in <module>
+    asyncio.create_task(run_and_rerun()) # Do not await, schedule it
+    ~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^
+  File "C:\Users\ingen\AppData\Local\Programs\Python\Python313\Lib\asyncio\tasks.py", line 407, in create_task
+    loop = events.get_running_loop()
+RuntimeError: no running event loop
+2025-04-08 12:24:47,499 - src.utils.logging_config - ERROR - Error starting Agno workflow: no running event loop
+Traceback (most recent call last):
+  File "C:\Users\ingen\Desktop\AGENTES\AGNO\app\app.py", line 144, in on_generate_content
+    asyncio.create_task(run_workflow()) #Schedule the workflow
+    ~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^
+  File "C:\Users\ingen\AppData\Local\Programs\Python\Python313\Lib\asyncio\tasks.py", line 407, in create_task
+    loop = events.get_running_loop()
+RuntimeError: no running event loop
+2025-04-08 12:35:58,154 - src.utils.logging_config - ERROR - Serper API returned error status 403 for 'What are MCPs (Model Context Protocols) and why you should use them?': {"message":"Unauthorized.","statusCode":403}
+2025-04-08 12:44:09,197 - src.utils.logging_config - ERROR - Serper API returned error status 403 for 'What are MCPs (Model Context Protocols) and why you should use them?': {"message":"Unauthorized.","statusCode":403}
+2025-04-08 14:52:27,417 - src.utils.logging_config - ERROR - Serper API returned error status 403 for 'What are MCPs (Model Context Protocols) and why you should use them?': {"message":"Unauthorized.","statusCode":403}
+2025-04-08 15:21:29,879 - src.utils.logging_config - ERROR - Serper API returned error status 403 for 'What are MCPs (Model Context Protocols) and why you should use them?': {"message":"Unauthorized.","statusCode":403}

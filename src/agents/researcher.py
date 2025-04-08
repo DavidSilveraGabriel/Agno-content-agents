@@ -1,216 +1,289 @@
-# agents/researcher.py
 import json
-import requests # Import requests for Serper API calls
+import httpx # <-- Import httpx
+import os
+from datetime import datetime
+import asyncio
 from agno.agent import Agent
 from agno.models.google import Gemini
-# Removed MCP import attempt
-# from agno.tools.exa import ExaTools # No longer used
-# from agno.tools.firecrawl import FirecrawlTools # Commented out
-# from agno.tools.googlesearch import GoogleSearchTools # Commented out
-from agno.tools.crawl4ai import Crawl4aiTools # Import Crawl4aiTools
-# Removed RedisMemory and ChromaKnowledge imports
-from agno.storage.sqlite import SqliteStorage # Added SqliteStorage import
-import os
-# Use the MCP client - assuming it's available globally or passed in
-# For now, we'll structure the code assuming an MCP client is accessible.
-# If not, we'll need to adjust how the MCP tool is called.
-# from mcp_client import mcp # Placeholder for how MCP client might be accessed
-from src.config.settings import settings # Import settings object
-from src.utils.logging_config import logger # Corrected utils import path
-from datetime import datetime
+from agno.tools.crawl4ai import Crawl4aiTools
+from agno.storage.sqlite import SqliteStorage
+
+# Assuming settings are in src/config/settings.py
+# Make sure you have:
+
+
+from src.config.settings import settings
+
+
+from src.utils.logging_config import logger
+
+
+class MyCrawl4aiTools(Crawl4aiTools):
+    """Custom wrapper for Crawl4aiTools to add basic error handling."""
+    async def web_crawler(self, url: str, max_length: int | None = None) -> str | None:
+        try:
+            # Note: Crawl4AI might have its own timeout/error handling.
+            # Consider adding specific exception catching if needed.
+            content = await self._async_web_crawler(url, max_length)
+            if content is None:
+                logger.warning(f"MyCrawl4aiTools.web_crawler returned None for {url}")
+            return content
+        except Exception as e:
+            # Log specific errors encountered during crawling
+            logger.error(f"Error in MyCrawl4aiTools.web_crawler processing {url}: {e}", exc_info=False) # exc_info=False to avoid overly verbose logs for common crawl errors
+            return None # Return None on error
+
 
 class ResearcherAgent:
-    # Assuming mcp_client is passed or accessible globally
-    # def __init__(self, mcp_client):
     def __init__(self):
-        # self.mcp_client = mcp_client # Store MCP client if passed
-
         # --- Tool Configuration ---
-        # Commented out previous tools
-        # self.search_tool = GoogleSearchTools()
-        # self.scraper_tool = FirecrawlTools(
-        #     api_key=settings.FIRECRAWL_API_KEY,
-        #     scrape=True,
-        #     crawl=False
-        # )
-
-        # New scraper tool using Crawl4AI
-        self.scraper_tool = Crawl4aiTools(max_length=None) # Use None for potentially unlimited length, or set a value like 5000
+        # Consider adding timeout configuration to Crawl4aiTools if available
+        self.scraper_tool = MyCrawl4aiTools(max_length=None) # Set reasonable max_length?
 
         # --- Storage Configuration ---
-        # Ensure 'tmp' directory exists or adjust path as needed
-        db_path = "tmp/researcher_storage.db"
+        db_path = os.path.join("tmp", "researcher_storage.db") # Use os.path.join for cross-platform compatibility
         os.makedirs(os.path.dirname(db_path), exist_ok=True)
-        self.storage = SqliteStorage(
-            table_name="researcher_sessions",
-            db_file=db_path
-        )
+        self.storage = SqliteStorage(table_name="researcher_sessions", db_file=db_path)
 
-        # Configuración del agente
         # --- Agent Configuration ---
+        if not settings.GOOGLE_API_KEY:
+            logger.warning("GOOGLE_API_KEY not found in settings or environment variables. ResearcherAgent might fail.")
+
         self.agent = Agent(
             name="ResearcherAgent",
-            model=Gemini(id="gemini-2.0-flash", api_key=settings.GOOGLE_API_KEY), # Use settings.GOOGLE_API_KEY
-            # Note: We are calling Serper API directly, so it's not an 'agno tool' here.
-            # Crawl4aiTools is used for scraping.
+            # Use a default model or handle missing key more gracefully?
+            model=Gemini(id="gemini-1.5-flash", api_key=settings.GOOGLE_API_KEY), # Using 1.5 Flash as example
             tools=[self.scraper_tool],
-            storage=self.storage, # Use SQLite storage
-            add_history_to_messages=True, # Add history capability
-            num_history_responses=3, # Number of history messages to include
-            # Removed memory and knowledge parameters
-            description="You are an expert researcher. You use the Serper API to find relevant URLs and Crawl4AI to scrape content from specific URLs.",
+            storage=self.storage,
+            add_history_to_messages=True,
+            num_history_responses=3,
+            description="You are an expert researcher. Use provided URLs or search the web to gather information on a topic.",
             instructions=[
                 "1. Analyze the provided topic.",
-                "2. If specific URLs are provided, use the Crawl4AI tool to extract and analyze their content.",
-                "3. If no URLs are provided, perform a web search using the Serper API to find relevant URLs for the topic.",
-                "4. Once URLs are found (either provided or via search), use Crawl4AI to extract their content.",
-                # Removed instructions related to Redis memory and Chroma knowledge
-                "5. Generate a structured and well-documented summary based on the found content.",
+                "2. If specific URLs are provided, use the web_crawler tool to extract content from EACH URL.",
+                "3. If NO URLs are provided, perform a web search using the Serper API (via internal logic, not a tool call) to find relevant URLs.",
+                "4. After finding URLs (from search), use the web_crawler tool to extract content from the MOST PROMISING ones (e.g., top 3-5).",
+                "5. Synthesize the gathered information from all processed URLs into a comprehensive summary.",
+                "6. Clearly list the source URLs used for the final summary.",
+                "7. If you encounter errors accessing a URL or find no relevant content, note that but try other sources.",
+                "8. If the search yields no usable URLs, or crawling fails for all found URLs, state that clearly."
             ],
-            add_datetime_to_instructions=False, # Datetime less relevant without specific memory/knowledge steps
-            markdown=True,
-            show_tool_calls=True,
-            debug_mode=False
+            add_datetime_to_instructions=False, # Usually not needed unless time-sensitivity is critical
+            markdown=True, # Use Markdown for potentially better structured LLM output
+            show_tool_calls=True, # Useful for debugging tool usage
+            debug_mode=False, # Set to True for more verbose Agno logging if needed
         )
 
     async def research(self, topic: str, urls: list[str] | None = None) -> dict:
         """
-        Performs research on a specific topic using provided URLs or web search.
+        Researches a topic using provided URLs or by searching the web.
 
         Args:
-            topic (str): The topic to research.
-            urls (list[str] | None): Specific URLs to analyze. If None, performs web search.
+            topic: The topic to research.
+            urls: A list of specific URLs to process (optional).
 
         Returns:
-            dict: Research result including topic, content (or error), timestamp, and sources.
+            A dictionary containing the research results:
+            {
+                "topic": str,
+                "content": str | None, # Synthesized summary or error message
+                "timestamp": str,
+                "sources": list[str] # List of URLs successfully processed
+            }
         """
-        logger.info(f"Starting research for topic: '{topic}'")
+        logger.info(f"Starting research for topic: '{topic}' with provided URLs: {bool(urls)}")
 
-        content = None
-        sources_used = [] # Initialize list for sources
+        final_content: str | None = None
+        processed_sources: list[str] = []
+        error_message: str | None = None
 
         try:
             if urls:
-                # If URLs are provided, use them directly
                 logger.info(f"Processing {len(urls)} provided URLs...")
-                content = await self._process_urls(urls)
-                sources_used = urls
-                if not content:
-                     logger.warning(f"Processing provided URLs yielded no content for topic: {topic}")
-                     content = "Failed to process provided URLs." # Provide feedback if scraping fails
+                final_content, processed_sources = await self._process_urls(urls)
+                if not final_content:
+                    error_message = "Processing provided URLs yielded no usable content."
+                    logger.warning(f"{error_message} for topic: {topic}")
             else:
-                # If no URLs, perform search and then process
                 logger.info("No URLs provided, performing web search and analysis...")
-                search_result = await self._search_and_analyze(topic)
-                if isinstance(search_result, tuple):
-                    content, sources_used = search_result
-                    if not content:
-                         logger.warning(f"Search successful, but scraping yielded no content for topic: {topic}")
-                         # Keep sources, content might be the error message from _search_and_analyze
-                else: # Handle potential error string return from search
-                    content = search_result # Store the error message
-                    sources_used = []
-                    logger.error(f"Search and analyze phase failed for topic '{topic}': {content}")
+                search_content, search_sources = await self._search_and_analyze(topic)
+                if search_content:
+                    final_content = search_content
+                    processed_sources = search_sources
+                else:
+                    # Use the error message from _search_and_analyze if content is None
+                    error_message = search_sources[0] if search_sources and isinstance(search_sources[0], str) else "Web search and analysis failed to yield content."
+                    logger.warning(f"Search/analyze yielded no content for topic '{topic}'. Reason: {error_message}")
+                    processed_sources = [] # Ensure sources list is empty if search failed
 
         except Exception as e:
             logger.error(f"Unexpected error during research method for topic '{topic}': {e}", exc_info=True)
-            content = f"Unexpected error during research: {e}"
-            # Preserve sources if they were provided or found before the error
-            sources_used = urls if urls else (sources_used if sources_used else [])
+            error_message = f"An unexpected error occurred during research: {e}"
+            final_content = None # Ensure content is None on major error
+            # Keep any sources processed before the error, if applicable
+            processed_sources = processed_sources or (urls if urls else [])
 
-
-        # --- Result Formatting ---
+        # Prepare the final result dictionary
         research_result = {
             "topic": topic,
-            "content": content, # This might be scraped content or an error message
+            # Prioritize content, but include error message if content is missing
+            "content": final_content if final_content else error_message,
             "timestamp": datetime.now().isoformat(),
-            "sources": sources_used # Store the list of URLs used (provided or found)
+            "sources": processed_sources, # Only list sources that contributed content
         }
 
-        logger.info(f"Research completed for topic: '{topic}'. Sources count: {len(sources_used)}. Content length: {len(content) if content else 0}")
-        # logger.debug(f"Research result: {research_result}") # Optional debug
+        log_content_len = len(final_content) if final_content else 0
+        log_status = "successfully" if final_content else f"with errors ({error_message})"
+        logger.info(
+            f"Research for topic: '{topic}' completed {log_status}. "
+            f"Sources processed: {len(processed_sources)}. Content length: {log_content_len}."
+        )
 
         return research_result
 
-    async def _process_urls(self, urls: list[str]) -> str | None:
-        """Processes a list of specific URLs using Crawl4AI."""
+    async def _process_urls(self, urls_to_process: list[str]) -> tuple[str | None, list[str]]:
+        """
+        Processes a list of URLs using the web_crawler tool and combines the content.
+
+        Args:
+            urls_to_process: List of URLs to crawl.
+
+        Returns:
+            A tuple containing:
+            - Combined content string (or None if no content found).
+            - List of URLs from which content was successfully extracted.
+        """
         contents = []
-        logger.info(f"Processing {len(urls)} URLs with Crawl4AI...")
-        for url in urls:
-            try:
-                # Use Crawl4aiTools' web_crawler function
-                # It might return a string directly or need parsing depending on crawl4ai version/output
-                scraped_data = await self.scraper_tool.web_crawler(url=url) # Pass url as named argument
-                if scraped_data: # Assuming it returns the text content directly
-                    contents.append(f"--- Source: {url} ---\n\n{scraped_data}")
-                else:
-                    logger.warning(f"Crawl4AI returned no content for {url}")
-            except Exception as e:
-                logger.error(f"Error processing {url} with Crawl4AI: {e}", exc_info=True)
+        successful_sources = []
+        logger.info(f"Processing {len(urls_to_process)} URLs with Crawl4AI...")
 
-        return "\n\n".join(contents) if contents else None
+        # Process URLs concurrently using asyncio.gather for efficiency
+        tasks = [self.scraper_tool.web_crawler(url=url) for url in urls_to_process]
+        results = await asyncio.gather(*tasks, return_exceptions=True) # Gather results, including exceptions
 
-    async def _search_and_analyze(self, topic: str) -> tuple[str | None, list[str]]:
-        """Performs web search using Serper API, scrapes results with Crawl4AI, and returns content and sources."""
+        for url, result in zip(urls_to_process, results):
+            if isinstance(result, Exception):
+                logger.error(f"Error processing {url} with Crawl4AI task: {result}", exc_info=False)
+            elif result:
+                contents.append(f"--- Source: {url} ---\n\n{result}\n\n--- End Source: {url} ---")
+                successful_sources.append(url)
+                logger.debug(f"Successfully scraped content from {url} (Length: {len(result)})")
+            else:
+                logger.warning(f"Crawl4AI returned no content or failed for {url}")
+
+        if contents:
+            logger.info(f"Successfully extracted content from {len(successful_sources)} out of {len(urls_to_process)} URLs.")
+            return "\n\n".join(contents), successful_sources
+        else:
+            logger.warning(f"Failed to extract any content from the provided {len(urls_to_process)} URLs.")
+            return None, []
+
+    async def _search_and_analyze(self, topic: str, num_results_to_scrape: int = 3) -> tuple[str | None, list[str]]:
+        """
+        Searches the web using Serper, then scrapes the top results using Crawl4AI.
+
+        Args:
+            topic: The topic to search for.
+            num_results_to_scrape: Max number of search results to attempt scraping.
+
+        Returns:
+            A tuple containing:
+            - Combined content string from scraped results (or None).
+            - List of URLs successfully scraped OR a list containing an error message if search fails.
+        """
         logger.info(f"Performing web search with Serper API for: {topic}")
-        found_sources = []
-        scraped_content = None
 
-        # --- 1. Perform Web Search using Serper API ---
+        # --- Get API Key from Settings ---
+        api_key_to_use = settings.SERPER_API_KEY # <-- Asegúrate que esta está ACTIVA
+
+        # --- LÍNEA DE DEBUGGING TEMPORAL ---
+        print(f"DEBUG: Valor recuperado de settings.SERPER_API_KEY: '{api_key_to_use}'")
+        logger.info(f"DEBUG: Valor recuperado de settings.SERPER_API_KEY: '{api_key_to_use}'")
+
+        # Check if the API key is available
+        if not api_key_to_use:
+             logger.error("SERPER_API_KEY not found in settings or environment variables. Cannot perform web search.")
+             # Return None content and an error message in the sources list
+             return None, ["Serper API key is missing."]
+        # ----------------------------------
+
         serper_url = "https://google.serper.dev/search"
-        payload = json.dumps({"q": topic, "num": 5}) # Request 5 results
+        payload = json.dumps({"q": topic, "num": 10}) # Ask for more results initially
         headers = {
-            'X-API-KEY': settings.SERPER_API_KEY, # Get key from settings
-            'Content-Type': 'application/json'
+            "X-API-KEY": api_key_to_use,
+            "Content-Type": "application/json",
         }
 
-        try:
-            response = requests.request("POST", serper_url, headers=headers, data=payload, timeout=10) # Added timeout
-            response.raise_for_status() # Raise HTTPError for bad responses (4xx or 5xx)
-            search_results = response.json()
-            logger.info(f"Serper API response received.")
-            # logger.debug(f"Serper API full response: {json.dumps(search_results, indent=2)}") # Optional: log full response if needed
+        # --- DEBUGGING: Log the key being used ---
+        logger.info(f"Attempting Serper API call for '{topic}' using API Key ending with: ...{api_key_to_use[-4:] if api_key_to_use and len(api_key_to_use) >= 4 else 'INVALID_OR_SHORT'}")
+        # -----------------------------------------
 
-            # --- 2. Extract URLs from Serper results ---
-            # Structure depends on Serper response, common is {'organic': [{'link': '...'}]}
-            urls_to_scrape = []
-            if 'organic' in search_results and isinstance(search_results['organic'], list):
-                urls_to_scrape = [item.get('link') for item in search_results['organic'] if isinstance(item, dict) and item.get('link')]
+        urls_to_scrape = []
+        try:
+            # --- Use httpx for async request ---
+            async with httpx.AsyncClient(timeout=15.0) as client: # Set a reasonable timeout
+                response = await client.post(serper_url, headers=headers, content=payload)
+            # ----------------------------------
+
+            logger.debug(f"Serper API raw response status: {response.status_code}")
+            response.raise_for_status() # Raise HTTPStatusError for 4xx/5xx responses
+            search_results = response.json()
+            logger.info(f"Serper API response received successfully for topic: {topic}")
+
+            # Extract organic result URLs safely
+            organic_results = search_results.get("organic", [])
+            if isinstance(organic_results, list):
+                urls_to_scrape = [
+                    item.get("link")
+                    for item in organic_results
+                    if isinstance(item, dict) and item.get("link") and isinstance(item.get("link"), str)
+                ]
             else:
-                logger.warning(f"Serper response missing 'organic' results list or format unexpected.")
+                logger.warning("Serper response 'organic' field is not a list or missing.")
 
             if not urls_to_scrape:
-                 logger.warning(f"Serper search for '{topic}' did not return valid URLs in 'organic' results.")
-                 return f"Serper search for '{topic}' did not return valid URLs.", []
+                logger.warning(f"Serper search for '{topic}' did not return any valid URLs in 'organic' results.")
+                return None, [f"Web search for '{topic}' did not return usable URLs."] # Error message in list
 
-            found_sources = urls_to_scrape
-            logger.info(f"Found {len(found_sources)} URLs from Serper.")
+            logger.info(f"Found {len(urls_to_scrape)} potential URLs from Serper. Attempting to scrape top {num_results_to_scrape}.")
 
-            # --- 3. Scrape content from found URLs using Crawl4AI ---
-            scraped_content = await self._process_urls(found_sources) # Reuse URL processing logic
+            # Take only the top N results to scrape
+            urls_to_try = urls_to_scrape[:num_results_to_scrape]
+
+            # Process the found URLs using the same helper function
+            scraped_content, successful_sources = await self._process_urls(urls_to_try)
 
             if not scraped_content:
-                logger.warning(f"Crawl4AI failed to extract content from any of the URLs found for '{topic}'.")
-                # Return sources even if scraping failed
-                return f"Crawl4AI failed to extract content from the found URLs for '{topic}'.", found_sources
+                logger.warning(
+                    f"Crawl4AI failed to extract content from any of the top {len(urls_to_try)} URLs found for '{topic}'."
+                )
+                # Return None, but include the list of URLs *tried* for context
+                return None, [f"Crawling failed for top search results: {', '.join(urls_to_try)}"]
 
-            return scraped_content, found_sources
+            # Return the content and the list of *successfully* scraped sources
+            return scraped_content, successful_sources
 
-        except requests.exceptions.RequestException as e:
-            logger.error(f"Error calling Serper API for '{topic}': {e}", exc_info=True)
-            return f"Error calling Serper API: {e}", []
+        # --- Specific httpx exceptions ---
+        except httpx.HTTPStatusError as e:
+             logger.error(f"Serper API returned error status {e.response.status_code} for '{topic}': {e.response.text}", exc_info=False)
+             return None, [f"Error calling Search API (Status {e.response.status_code})"]
+        except httpx.RequestError as e:
+            logger.error(f"Network error calling Serper API for '{topic}': {e}", exc_info=False)
+            return None, [f"Network error during web search: {e}"]
+        # ---------------------------------
         except json.JSONDecodeError as e:
-             logger.error(f"Error decoding JSON response from Serper API for '{topic}': {e}", exc_info=True)
-             return f"Error decoding Serper API response: {e}", []
+            logger.error(f"Error decoding JSON response from Serper API for '{topic}': {e}", exc_info=True)
+            # Log the raw response text if possible and not too large
+            try:
+                raw_text = response.text[:500] # Log beginning of text
+                logger.error(f"Serper raw response text (start): {raw_text}")
+            except NameError: # response might not be defined if httpx call failed earlier
+                pass
+            return None, ["Error decoding search results."]
         except Exception as e:
-            # Catch-all for other potential errors during search or scraping phase
             logger.error(f"Unexpected error during search/analysis for '{topic}': {e}", exc_info=True)
-            # Return partial sources if available
-            return scraped_content or f"Unexpected error during search/analysis: {e}", found_sources
+            return None, [f"Unexpected error during search: {e}"]
 
-
-# Instancia global del agente (considerar si necesita el mcp_client)
-# researcher = ResearcherAgent(mcp_client=mcp) # Example if MCP client is passed
-researcher = ResearcherAgent() # Current instantiation
-
-# Función auxiliar run_research eliminada ya que la lógica principal está en research()
+# --- Agent Instantiation ---
+# This creates a single instance when the module is imported.
+researcher = ResearcherAgent()
