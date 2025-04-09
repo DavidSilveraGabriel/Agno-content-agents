@@ -52,7 +52,7 @@ class ResearcherAgent:
         self.agent = Agent(
             name="ResearcherAgent",
             # Use a default model or handle missing key more gracefully?
-            model=Gemini(id="gemini-1.5-flash", api_key=settings.GOOGLE_API_KEY), # Using 1.5 Flash as example
+            model=Gemini(id="gemini-2.0-flash", api_key=settings.GOOGLE_API_KEY), # Using 1.5 Flash as example
             tools=[self.scraper_tool],
             storage=self.storage,
             add_history_to_messages=True,
