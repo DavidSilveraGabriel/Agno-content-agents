@@ -1,6 +1,8 @@
-# Agno Social Content Generation Workflow
+# Social Content Generation Agents Workflow (AGNO)
 
 This project utilizes the Agno framework to create an automated workflow for generating social media and blog content based on a given topic. It employs multiple AI agents orchestrated by a central workflow, interacting with external APIs like Google Gemini and potentially Firecrawl for research. The user interface is provided via a Streamlit web application.
+
+![Workflow Diagram](src/assets/Workflow.png)
 
 ## Features
 
@@ -114,5 +116,3 @@ AGNO/
 ## License
 
 *(Specify your project's license, e.g., MIT License)*
-
-
